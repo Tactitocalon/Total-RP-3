@@ -383,7 +383,7 @@ local function onClassColorSelected(red, green, blue)
 end
 
 local function onPsychoClick(frame, value, modif)
-	if value + modif < 6 and value + modif > 0 then
+	if value + modif <= 6 and value + modif >= 0 then
 		refreshPsycho(frame, value + modif);
 	end
 end

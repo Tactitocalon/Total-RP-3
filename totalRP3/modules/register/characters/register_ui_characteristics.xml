@@ -178,11 +178,33 @@
 				<Anchors>
 					<Anchor point="LEFT" x="10" y="2"/>
 				</Anchors>
+				<Layers>
+					<Layer>
+						<Texture file="Interface\Common\WhiteIconFrame">
+							<Color r="0.4627" g="0.4275" b="0.9686" a="1.0000" />
+							<Anchors>
+								<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeKey="$parent.icon"/>
+								<Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" relativeKey="$parent.icon"/>
+							</Anchors>
+						</Texture>
+					</Layer>
+				</Layers>
 			</Button>
 			<Button name="$parentRightIcon" inherits="TRP3_IconButton">
 				<Anchors>
 					<Anchor point="RIGHT" x="-30" y="2"/>
 				</Anchors>
+				<Layers>
+					<Layer>
+						<Texture file="Interface\Common\WhiteIconFrame">
+							<Color r="0.9098" g="0.7020" b="0.0039" a="1.0000" />
+							<Anchors>
+								<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeKey="$parent.icon"/>
+								<Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" relativeKey="$parent.icon"/>
+							</Anchors>
+						</Texture>
+					</Layer>
+				</Layers>
 			</Button>
 			<EditBox name="$parentLeftField" inherits="TRP3_TitledEditBox">
 				<Size x="0" y="18"/>
