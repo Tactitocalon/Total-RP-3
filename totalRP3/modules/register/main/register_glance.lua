@@ -578,6 +578,28 @@ local function onStart()
 		slot:SetScript("OnClick", onGlanceSlotClick);
 		slot:SetScript("OnDoubleClick", onGlanceDoubleClick);
 	end
+
+	TRP3_API.MSP.registerNewDescriptionDataProvider(function()
+		local textRepresentation = "";
+		local glanceTab = get("player/misc/PE");
+
+		if glanceTab and #glanceTab > 1 then
+			textRepresentation = textRepresentation .. "== " .. loc("REG_PLAYER_GLANCE") .. " ==\n";
+
+			for _, glance in pairs(glanceTab) do
+				local presetTitle = glance.TI or UNKNOWN;
+				local presetText = glance.TX or "";
+				local presetIcon = glance.IC or Globals.icons.unknown;
+				textRepresentation = textRepresentation
+						.. presetIcon .. "\n"
+						.. presetTitle .. "\n"
+						.. presetText .. "\n"
+						.. "\n";
+			end
+		end
+
+		return textRepresentation;
+	end);
 end
 
 local MODULE_STRUCTURE = {

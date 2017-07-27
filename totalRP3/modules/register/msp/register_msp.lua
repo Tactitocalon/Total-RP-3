@@ -367,6 +367,14 @@ local function onStart()
 	-- Update
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+	TRP3_API.MSP = {};
+
+	local additionalDescriptionDataProviders = {};
+	function TRP3_API.MSP.registerNewDescriptionDataProvider(typeOfDataProvider, additionalDescriptionDataProvider)
+		assert(type(additionalDescriptionDataProvider) == "function", ""); -- TODO
+		tinsert(additionalDescriptionDataProviders, additionalDescriptionDataProvider);
+	end
+
 	local function updateCharacterData()
 		local character = get("player/character");
 		msp.my['CU'] = character.CU;
@@ -453,19 +461,37 @@ local function onStart()
 		end
 	end
 
+	--- This function will call the additional data providers registered to get a text version
+	--- of TRP3 only features to be appended to the description field.
+	local function updateAdditionnalDescriptionData()
+		local descriptionText = msp.my['DE'];
+
+		for _, additionalDataProvider in pairs(additionalDescriptionDataProviders) do
+			local additionalData = additionalDataProvider();
+			if additionalData and additionalData ~= "" then
+				descriptionText = descriptionText .. "\n" .. additionalData;
+			end
+
+			msp.my['DE'] = descriptionText;
+		end
+	end
+
 	local function onProfileChanged()
 		updateCharacteristicsData();
 		updateAboutData();
+		updateAdditionnalDescriptionData();
 		msp:Update();
 	end
 
 	local function onAboutChanged()
 		updateAboutData();
+		updateAdditionnalDescriptionData();
 		msp:Update();
 	end
 
 	local function onCharacterChanged()
 		updateCharacterData();
+		updateAdditionnalDescriptionData();
 		msp:Update();
 	end
 

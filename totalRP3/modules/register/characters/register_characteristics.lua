@@ -1021,6 +1021,62 @@ function TRP3_API.register.inits.characteristicsInit()
 	Events.listenToEvent(Events.REGISTER_PROFILES_LOADED, compressData); -- On profile change, compress the new data
 	compressData();
 
+	TRP3_API.MSP.registerNewDescriptionDataProvider(function()
+		local textRepresentation = "";
+		local miscTab = get("player/characteristics/MI");
+
+		if miscTab and #miscTab > 1 then
+			textRepresentation = textRepresentation .. "== Additional info ==\n";
+
+			for _, misc in pairs(miscTab) do
+				local miscTitle = misc.NA or UNKNOWN;
+				local miscText = misc.VA or "";
+				local miscIcon = misc.IC or Globals.icons.unknown;
+				textRepresentation = textRepresentation .. miscIcon .. "\n";
+				textRepresentation = textRepresentation .. miscTitle .. "\n";
+				textRepresentation = textRepresentation .. miscText .. "\n";
+				textRepresentation = textRepresentation .. "\n";
+			end
+		end
+
+		return textRepresentation;
+	end);
+
+	TRP3_API.MSP.registerNewDescriptionDataProvider(function()
+		local textRepresentation = "";
+		local psychoTab = get("player/characteristics/PS");
+
+		if psychoTab and #psychoTab > 1 then
+			textRepresentation = textRepresentation .. "== " .. loc("REG_PLAYER_PSYCHO") .. " ==\n";
+
+			for _, psycho in pairs(psychoTab) do
+				-- Preset pointer
+				if psycho.ID then
+					psycho = PSYCHO_PRESETS[psycho.ID] or PSYCHO_PRESETS_UNKOWN;
+				end
+
+				local psychoTextLeft = psycho.LT or ""
+				local psychoTextRight = psycho.RT or ""
+				local psychoIconLeft = psycho.LI or Globals.icons.default
+				local psychoIconRight = psycho.RI or Globals.icons.default
+				local psychoValue = psycho.VA;
+
+				textRepresentation = textRepresentation .. psychoIconLeft .. " " .. psychoTextLeft .. " ";
+				for dotIndex = 1, 6 do
+					if dotIndex <= psychoValue then
+						textRepresentation = textRepresentation .. "+";
+					else
+						textRepresentation = textRepresentation .. "-";
+					end
+				end
+				textRepresentation = textRepresentation .. " " .. psychoTextRight .. " " .. psychoIconRight;
+				textRepresentation = textRepresentation .. "\n";
+			end
+		end
+
+		return textRepresentation;
+	end);
+
 	-- Resizing
 	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerwidth, containerHeight)
 		local finalContainerWidth = containerwidth - 70;

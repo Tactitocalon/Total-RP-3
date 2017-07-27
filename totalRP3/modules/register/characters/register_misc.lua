@@ -541,6 +541,30 @@ function TRP3_API.register.inits.miscInit()
 	Events.listenToEvent(Events.REGISTER_PROFILES_LOADED, compressData); -- On profile change, compress the new data
 	compressData();
 
+	TRP3_API.MSP.registerNewDescriptionDataProvider(function()
+		local textRepresentation = "";
+		local styleTab = get("player/misc/ST");
+
+		if styleTab and #styleTab > 1 then
+			textRepresentation = textRepresentation .. "== " .. loc("REG_PLAYER_STYLE_RPSTYLE") .." ==\n";
+
+
+			for index, fieldData in pairs(STYLE_FIELDS) do
+				local selectedValue = styleTab[fieldData.id] or 0;
+				local styleName = fieldData.name;
+				textRepresentation = textRepresentation .. styleName .. ": ";
+				for _, data in pairs(fieldData.values) do
+					if data[2] == selectedValue then
+						textRepresentation = textRepresentation .. data[1] .. "\n";
+						break;
+					end
+				end
+			end
+		end
+
+		return textRepresentation;
+	end);
+
 	-- Resizing
 	TRP3_AtFirstGlanceEditorResizeButton.onResizeStop = function()
 		TRP3_AtFirstGlanceEditorTextScrollText:SetSize(TRP3_AtFirstGlanceEditor:GetWidth() - 100, 10);
